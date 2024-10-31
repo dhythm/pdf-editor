@@ -17,3 +17,8 @@ npm install @pdfme/generator @pdfme/ui @pdfme/common
 npm install
 npm run dev
 ```
+
+```sh
+npm install react-router-dom
+npm install eslint-plugin-unused-imports --save-dev
+```
