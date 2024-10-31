@@ -1,0 +1,78 @@
+version: "3"
+
+services:
+  api:
+    container_name: backend
+    # command: "poetry run python manage.py runserver 0.0.0.0:8000"
+    command: "gunicorn mysite.wsgi --bind 0.0.0.0:8000"
+    working_dir: /app
+    build:
+      context: ./backend/
+      dockerfile: ./containers/django/Dockerfile
+    tty: true
+    ports:
+      - 8000:8000
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: postgres
+      DB_USER: postgres
+      DB_PASSWORD: password
+    networks:
+      - pdf-editor-network
+  proxy:
+    container_name: proxy
+    build:
+      context: ./backend
+      dockerfile: ./containers/nginx/Dockerfile
+    ports:
+      - 80:80
+    depends_on:
+      - api
+    networks:
+      - pdf-editor-network
+  web:
+    container_name: frontend
+    working_dir: /app
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    tty: true
+    ports:
+      - 3000:3000
+    depends_on:
+      - api
+    networks:
+      - pdf-editor-network
+  db:
+    container_name: db
+    image: postgres
+    ports:
+      - 5432:5432
+    restart: always
+    # set shared memory limit when using docker-compose
+    shm_size: 128mb
+    # or set shared memory limit when deploy via swarm stack
+    #volumes:
+    #  - type: tmpfs
+    #    target: /dev/shm
+    #    tmpfs:
+    #      size: 134217728 # 128*2^20 bytes = 128Mb
+    volumes:
+      - pg_data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_INITDB_ARGS: "--locale-provider=icu --icu-locale=en"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - pdf-editor-network
+
+networks:
+  pdf-editor-network:
+    name: pdf-editor-network
