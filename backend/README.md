@@ -30,4 +30,16 @@ poetry install --no-root
 
 ```sh
 poetry add Django
+poetry add djangorestframework
+poetry add django-cors-headers
+```
+
+```sh
+poetry add --dev black isort autoflake
+```
+
+```sh
+poetry run django-admin startproject app .
+poetry run python manage.py migrate
+poetry run python manage.py runserver 8080
 ```
