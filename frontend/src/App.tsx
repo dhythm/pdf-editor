@@ -1,14 +1,11 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { Editor } from "./editor";
 
 function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <></>,
-    },
-    {
-      path: "/editor",
-      element: <></>,
+      element: <Editor />,
     },
     {
       path: "/viewer",
