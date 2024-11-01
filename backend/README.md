@@ -43,3 +43,9 @@ poetry run django-admin startproject app .
 poetry run python manage.py migrate
 poetry run python manage.py runserver 8080
 ```
+
+```sh
+poetry run python manage.py startapp pdf
+poetry run python manage.py makemigrations
+poetry run python manage.py migrate
+```
