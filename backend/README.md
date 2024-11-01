@@ -32,6 +32,7 @@ poetry install --no-root
 poetry add Django
 poetry add djangorestframework
 poetry add django-cors-headers
+poetry add psycopg
 ```
 
 ```sh
@@ -48,4 +49,9 @@ poetry run python manage.py runserver 8080
 poetry run python manage.py startapp pdf
 poetry run python manage.py makemigrations
 poetry run python manage.py migrate
+```
+
+```sh
+poetry run python manage.py runserver 8080
+curl http://127.0.0.1:8080/api/pdfs/templates/
 ```

@@ -1,49 +1,49 @@
 version: "3"
 
 services:
-  api:
-    container_name: backend
-    # command: "poetry run python manage.py runserver 0.0.0.0:8000"
-    command: "gunicorn mysite.wsgi --bind 0.0.0.0:8000"
-    working_dir: /app
-    build:
-      context: ./backend/
-      dockerfile: ./containers/django/Dockerfile
-    tty: true
-    ports:
-      - 8000:8000
-    environment:
-      DB_HOST: db
-      DB_PORT: 5432
-      DB_NAME: postgres
-      DB_USER: postgres
-      DB_PASSWORD: password
-    networks:
-      - pdf-editor-network
-  proxy:
-    container_name: proxy
-    build:
-      context: ./backend
-      dockerfile: ./containers/nginx/Dockerfile
-    ports:
-      - 80:80
-    depends_on:
-      - api
-    networks:
-      - pdf-editor-network
-  web:
-    container_name: frontend
-    working_dir: /app
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    tty: true
-    ports:
-      - 3000:3000
-    depends_on:
-      - api
-    networks:
-      - pdf-editor-network
+  # api:
+  #   container_name: backend
+  #   # command: "poetry run python manage.py runserver 0.0.0.0:8000"
+  #   command: "gunicorn mysite.wsgi --bind 0.0.0.0:8000"
+  #   working_dir: /app
+  #   build:
+  #     context: ./backend/
+  #     dockerfile: ./containers/django/Dockerfile
+  #   tty: true
+  #   ports:
+  #     - 8000:8000
+  #   environment:
+  #     DB_HOST: db
+  #     DB_PORT: 5432
+  #     DB_NAME: postgres
+  #     DB_USER: postgres
+  #     DB_PASSWORD: password
+  #   networks:
+  #     - pdf-editor-network
+  # proxy:
+  #   container_name: proxy
+  #   build:
+  #     context: ./backend
+  #     dockerfile: ./containers/nginx/Dockerfile
+  #   ports:
+  #     - 80:80
+  #   depends_on:
+  #     - api
+  #   networks:
+  #     - pdf-editor-network
+  # web:
+  #   container_name: frontend
+  #   working_dir: /app
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: Dockerfile
+  #   tty: true
+  #   ports:
+  #     - 3000:3000
+  #   depends_on:
+  #     - api
+  #   networks:
+  #     - pdf-editor-network
   db:
     container_name: db
     image: postgres
@@ -76,3 +76,6 @@ services:
 networks:
   pdf-editor-network:
     name: pdf-editor-network
+
+volumes:
+  pg_data:
