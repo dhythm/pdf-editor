@@ -84,3 +84,11 @@ Run and access to an api by django.
 poetry run python manage.py runserver 8080
 curl http://127.0.0.1:8080/api/pdfs/templates/
 ```
+
+Install gunicorn and run api server with container.
+
+```sh
+poetry add gunicorn
+docker compose down -v && docker compose up -d
+curl http://127.0.0.1:8000/api/pdfs/templates/
+```

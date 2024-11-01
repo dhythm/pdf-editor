@@ -1,25 +1,24 @@
 version: "3"
 
 services:
-  # api:
-  #   container_name: backend
-  #   # command: "poetry run python manage.py runserver 0.0.0.0:8000"
-  #   command: "gunicorn mysite.wsgi --bind 0.0.0.0:8000"
-  #   working_dir: /app
-  #   build:
-  #     context: ./backend/
-  #     dockerfile: ./containers/django/Dockerfile
-  #   tty: true
-  #   ports:
-  #     - 8000:8000
-  #   environment:
-  #     DB_HOST: db
-  #     DB_PORT: 5432
-  #     DB_NAME: postgres
-  #     DB_USER: postgres
-  #     DB_PASSWORD: password
-  #   networks:
-  #     - pdf-editor-network
+  api:
+    container_name: backend
+    # command: "poetry run python manage.py runserver 0.0.0.0:8000"
+    command: "gunicorn app.wsgi --bind 0.0.0.0:8000"
+    build:
+      context: ./backend/
+      dockerfile: ./containers/django/Dockerfile
+    tty: true
+    ports:
+      - 8000:8000
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: postgres
+      DB_USER: postgres
+      DB_PASSWORD: password
+    networks:
+      - pdf-editor-network
   # proxy:
   #   container_name: proxy
   #   build:

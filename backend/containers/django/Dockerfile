@@ -4,7 +4,7 @@ ENV PYTHONUNBUFFERED 1
 
 WORKDIR /
 
-COPY app ./app
+COPY . ./app
 
 WORKDIR /app
 
