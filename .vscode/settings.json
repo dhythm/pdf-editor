@@ -3,5 +3,8 @@
     "source.fixAll.eslint": "explicit"
   },
   "eslint.useFlatConfig": true,
-  "python.autoComplete.extraPaths": []
+  "python.defaultInterpreterPath": "/Users/dhythm/Library/Caches/pypoetry/virtualenvs/app-fuoVzwE9-py3.10/bin/python",
+  "python.autoComplete.extraPaths": [
+    "/Users/dhythm/Library/Caches/pypoetry/virtualenvs/app-fuoVzwE9-py3.10/lib/python3.10/site-packages"
+  ]
 }
