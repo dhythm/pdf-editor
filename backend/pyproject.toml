@@ -17,6 +17,9 @@ psycopg = "^3.2.3"
 black = "^24.10.0"
 isort = "^5.13.2"
 autoflake = "^2.3.1"
+mypy = "^1.13.0"
+django-stubs = "^5.1.1"
+djangorestframework-stubs = "^3.15.1"
 
 [build-system]
 requires = ["poetry-core"]

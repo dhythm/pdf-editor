@@ -37,6 +37,11 @@ poetry add psycopg
 
 ```sh
 poetry add --dev black isort autoflake
+poetry add --dev mypy django-stubs djangorestframework-stubs
+```
+
+```sh
+poetry run mypy pdfs/models.py
 ```
 
 ```sh
