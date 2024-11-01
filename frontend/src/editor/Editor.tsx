@@ -10,11 +10,11 @@ import {
   handleLoadTemplate,
   generatePDF,
   getTemplatePresets,
-} from "./utils";
+} from "../utils";
 
 const headerHeight = 80;
 
-const initialTemplatePresetKey = "invoice";
+const initialTemplatePresetKey = "table";
 const customTemplatePresetKey = "custom";
 
 const templatePresets = getTemplatePresets();

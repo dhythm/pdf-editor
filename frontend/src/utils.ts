@@ -11,9 +11,6 @@ import { generate } from "@pdfme/generator";
 import {
   multiVariableText,
   text,
-  barcodes,
-  image,
-  svg,
   line,
   table,
   rectangle,
@@ -127,19 +124,6 @@ export const getPlugins = () => {
     Line: line,
     Rectangle: rectangle,
     Ellipse: ellipse,
-    Image: image,
-    SVG: svg,
-    QR: barcodes.qrcode,
-    JAPANPOST: barcodes.japanpost,
-    EAN13: barcodes.ean13,
-    EAN8: barcodes.ean8,
-    Code39: barcodes.code39,
-    Code128: barcodes.code128,
-    NW7: barcodes.nw7,
-    ITF14: barcodes.itf14,
-    UPCA: barcodes.upca,
-    UPCE: barcodes.upce,
-    GS1DataMatrix: barcodes.gs1datamatrix,
   };
 };
 
@@ -182,26 +166,36 @@ export const isJsonString = (str: string) => {
   return true;
 };
 
-const getInvoiceTemplate = (
+const getTableTemplate = (
   tableContent: Array<Array<string>> = []
 ): Template => ({
   schemas: [
-    {
-      items: {
+    [
+      {
+        name: "items",
         type: "table",
         position: {
           x: 10,
           y: 10,
         },
-        width: 190,
+        width: 277,
         height: 45.75920000000001,
         content: JSON.stringify(tableContent),
         showHead: true,
-        head: ["Item", "Quantity", "Unit Price", "Total"],
-        headWidthPercentages: [
-          49.538325694806396, 17.962830593295262, 19.26354959425127,
-          13.23529411764708,
+        head: [
+          "目",
+          "補正前の額",
+          "補正額",
+          "計",
+          "国支出金",
+          "地方債",
+          "その他",
+          "一般財源",
+          "区分",
+          "金額",
+          "説明",
         ],
+        headWidthPercentages: [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 20],
         fontName: "NotoSerifJP-Regular",
         tableStyles: {
           borderColor: "#000000",
@@ -209,7 +203,7 @@ const getInvoiceTemplate = (
         },
         headStyles: {
           fontName: "NotoSerifJP-Regular",
-          fontSize: 13,
+          fontSize: 8,
           characterSpacing: 0,
           alignment: "center",
           verticalAlignment: "middle",
@@ -219,22 +213,22 @@ const getInvoiceTemplate = (
           backgroundColor: "",
           borderWidth: {
             top: 0.1,
-            right: 0,
-            bottom: 0,
-            left: 0,
+            right: 0.1,
+            bottom: 0.1,
+            left: 0.1,
           },
           padding: {
             top: 5,
-            right: 5,
+            right: 2,
             bottom: 5,
-            left: 5,
+            left: 2,
           },
         },
         bodyStyles: {
           fontName: "NotoSerifJP-Regular",
-          fontSize: 13,
+          fontSize: 6,
           characterSpacing: 0,
-          alignment: "center",
+          alignment: "right",
           verticalAlignment: "middle",
           lineHeight: 1,
           fontColor: "#000000",
@@ -243,26 +237,26 @@ const getInvoiceTemplate = (
           alternateBackgroundColor: "",
           borderWidth: {
             top: 0.1,
-            right: 0,
+            right: 0.1,
             bottom: 0.1,
-            left: 0,
+            left: 0.1,
           },
           padding: {
-            top: 6,
-            right: 5,
+            top: 5,
+            right: 2,
             bottom: 5,
-            left: 5,
+            left: 2,
           },
         },
         columnStyles: {
-          alignment: { "0": "left", "3": "right" },
+          alignment: { "0": "center", "8": "center", "10": "left" },
         },
       },
-    },
+    ],
   ],
   basePdf: {
-    width: 210,
-    height: 297,
+    width: 297,
+    height: 210,
     padding: [10, 10, 10, 10],
   },
   pdfmeVersion: "4.0.0",
@@ -279,28 +273,42 @@ export const getTemplatePresets = (): {
   template: () => Template;
 }[] => [
   {
-    key: "invoice",
-    label: "Invoice",
+    key: "table",
+    label: "Table",
     template: () =>
-      getInvoiceTemplate([
-        ["Eggshell Camisole Top", "1", "$123", "$123"],
-        ["Cuban Collar Shirt", "2", "$127", "$254"],
-        ["Cuban Collar Shirt", "2", "$127", "$254"],
-        ["Cuban Collar Shirt", "2", "$127", "$254"],
-        ["Cuban Collar Shirt", "2", "$127", "$254"],
-        ["Cuban Collar Shirt", "2", "$127", "$254"],
-        ["Cuban Collar Shirt", "2", "$127", "$254"],
-        ["Cuban Collar Shirt", "2", "$127", "$254"],
-        ["Cuban Collar Shirt", "2", "$127", "$254"],
-        ["Cuban Collar Shirt", "2", "$127", "$254"],
-        ["Cuban Collar Shirt", "2", "$127", "$254"],
-        ["Cuban Collar Shirt", "2", "$127", "$254"],
-        ["Cuban Collar Shirt", "2", "$127", "$254"],
-        ["Cuban Collar Shirt", "2", "$127", "$254"],
-        ["Cuban Collar Shirt", "2", "$127", "$254"],
-        ["Cuban Collar Shirt", "2", "$127", "$254"],
-        ["Cuban Collar Shirt", "2", "$127", "$254"],
-        ["something new", "3", "$85", "$275"], // Overlap on the Subtotal section
+      getTableTemplate([
+        [
+          "1 一般管理費",
+          "8,926,009",
+          "43,474",
+          "8,969,483",
+          "",
+          "",
+          "946",
+          "42,528",
+          "7 報償費",
+          "20",
+          "",
+        ],
+        ["", "", "", "", "", "", "946", "", "8 旅費", "403", ""],
+        ["", "", "", "", "", "", "", "", "10 需用費", "20", ""],
+        ["", "", "", "", "", "", "", "", "11 役務費", "125", ""],
+        ["", "", "", "", "", "", "", "", "12 委託費", "41,467", ""],
+        ["", "", "", "", "", "", "", "", "13 使用料及び貸借料", "20", ""],
+        ["", "", "", "", "", "", "", "", "17 備品購入費", "12", ""],
+        [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "18 負担金補助及び交付金",
+          "1,407",
+          "",
+        ],
       ]),
   },
   { key: "blank", label: "Blank", template: getBlankTemplate },

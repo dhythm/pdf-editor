@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Editor } from "./editor";
+import { FormAndViewer } from "./form-and-viewer";
 
 function App() {
   const router = createBrowserRouter([
@@ -8,8 +9,8 @@ function App() {
       element: <Editor />,
     },
     {
-      path: "/viewer",
-      element: <></>,
+      path: "/form-and-viewer",
+      element: <FormAndViewer />,
     },
   ]);
 
