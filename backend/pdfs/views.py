@@ -1,15 +1,19 @@
 from pdfs.serializers import PdfTemplateSerializer
 from rest_framework import status, viewsets
 from rest_framework.response import Response
+from rest_framework.decorators import action
+from pdfs.models import PdfTemplate
+
 
 # Create your views here.
 
 
 class PdfTemplateViewSet(viewsets.ModelViewSet):
     serializer_class = PdfTemplateSerializer
+    queryset = PdfTemplate.objects.all()
 
-    def list(self, request, *args, **kwargs):
-        # return super().list(request, *args, **kwargs)
+    @action(detail=False, methods=["GET"], url_path="data")
+    def get_templates_data(self, request):
         data = [
             [
                 "1 一般管理費",

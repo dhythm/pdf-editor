@@ -9,28 +9,11 @@ import {
   getPlugins,
   isJsonString,
 } from "@/utils";
+import { usePdfTemplatesData } from "@/hooks";
 
 const headerHeight = 71;
 
 type Mode = "form" | "viewer";
-
-const initTemplate = () => {
-  let template: Template = getTemplateByPreset(
-    localStorage.getItem("templatePreset") || ""
-  );
-  try {
-    const templateString = localStorage.getItem("template");
-    if (!templateString) {
-      return template;
-    }
-    const templateJson = JSON.parse(templateString);
-    checkTemplate(templateJson);
-    template = templateJson as Template;
-  } catch {
-    localStorage.removeItem("template");
-  }
-  return template;
-};
 
 export function FormAndViewer() {
   const uiRef = useRef<HTMLDivElement | null>(null);
@@ -40,6 +23,27 @@ export function FormAndViewer() {
   const [mode, setMode] = useState<Mode>(
     (localStorage.getItem("mode") as Mode) ?? "form"
   );
+
+  const pdfTemplatesData = usePdfTemplatesData();
+
+  const initTemplate = () => {
+    let template: Template = getTemplateByPreset(
+      localStorage.getItem("templatePreset") || "",
+      pdfTemplatesData.data?.data
+    );
+    try {
+      const templateString = localStorage.getItem("template");
+      if (!templateString) {
+        return template;
+      }
+      const templateJson = JSON.parse(templateString);
+      checkTemplate(templateJson);
+      template = templateJson as Template;
+    } catch {
+      localStorage.removeItem("template");
+    }
+    return template;
+  };
 
   const buildUi = (mode: Mode) => {
     const template = initTemplate();
@@ -125,6 +129,10 @@ export function FormAndViewer() {
     }
     buildUi(mode);
     setPrevUiRef(uiRef);
+  }
+
+  if (pdfTemplatesData.isPending) {
+    return <div>Loading...</div>;
   }
 
   return (

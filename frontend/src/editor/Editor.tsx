@@ -11,14 +11,12 @@ import {
   generatePDF,
   getTemplatePresets,
 } from "@/utils";
-import { usePdfTemplates } from "@/hooks";
+import { usePdfTemplatesData } from "@/hooks";
 
 const headerHeight = 80;
 
 const initialTemplatePresetKey = "table";
 const customTemplatePresetKey = "custom";
-
-const templatePresets = getTemplatePresets();
 
 export function Editor() {
   const designerRef = useRef<HTMLDivElement | null>(null);
@@ -29,13 +27,14 @@ export function Editor() {
   const [prevDesignerRef, setPrevDesignerRef] = useState<UiDesigner | null>(
     null
   );
-  const pdfTemplates = usePdfTemplates();
+  const pdfTemplatesData = usePdfTemplatesData();
 
-  console.log(pdfTemplates.data);
+  const templatePresets = getTemplatePresets(pdfTemplatesData.data?.data);
 
   const buildDesigner = () => {
     let template: Template = getTemplateByPreset(
-      localStorage.getItem("templatePreset") || ""
+      localStorage.getItem("templatePreset") || "",
+      pdfTemplatesData.data?.data
     );
     try {
       const templateString = localStorage.getItem("template");
@@ -45,7 +44,10 @@ export function Editor() {
 
       const templateJson = templateString
         ? JSON.parse(templateString)
-        : getTemplateByPreset(localStorage.getItem("templatePreset") || "");
+        : getTemplateByPreset(
+            localStorage.getItem("templatePreset") || "",
+            pdfTemplatesData.data?.data
+          );
       checkTemplate(templateJson);
       template = templateJson as Template;
     } catch {
@@ -119,7 +121,10 @@ export function Editor() {
     localStorage.setItem(
       "template",
       JSON.stringify(
-        getTemplateByPreset(localStorage.getItem("templatePreset") || "")
+        getTemplateByPreset(
+          localStorage.getItem("templatePreset") || "",
+          pdfTemplatesData.data?.data
+        )
       )
     );
     localStorage.removeItem("template");
@@ -133,6 +138,10 @@ export function Editor() {
     }
     buildDesigner();
     setPrevDesignerRef(designerRef);
+  }
+
+  if (pdfTemplatesData.isPending) {
+    return <div>Loading...</div>;
   }
 
   return (

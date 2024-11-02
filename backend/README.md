@@ -79,6 +79,7 @@ poetry run python manage.py migrate
 ```
 
 Run and access to an api by django.
+Need the last slash otherwise django will return 301.
 
 ```sh
 poetry run python manage.py runserver 8080

@@ -20,8 +20,12 @@ up-build: downv
 
 .PHONY: up-only-api
 up-only-api: downv
-	docker-compose up -d api
+	docker-compose up -d api migtaiton
 	@echo "containers are ready! ${API_ENDPOINT}"
+
+.PHONY: migrate
+migrate:
+	docker compose exec -T api python manage.py migrate
 
 .PHONY: db
 db: downv
