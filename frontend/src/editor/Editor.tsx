@@ -29,6 +29,10 @@ export function Editor() {
   );
   const pdfTemplatesData = usePdfTemplatesData();
 
+  if (pdfTemplatesData.isPending) {
+    return <div>Loading...</div>;
+  }
+
   const templatePresets = getTemplatePresets(pdfTemplatesData.data?.data);
 
   const buildDesigner = () => {
@@ -138,10 +142,6 @@ export function Editor() {
     }
     buildDesigner();
     setPrevDesignerRef(designerRef);
-  }
-
-  if (pdfTemplatesData.isPending) {
-    return <div>Loading...</div>;
   }
 
   return (

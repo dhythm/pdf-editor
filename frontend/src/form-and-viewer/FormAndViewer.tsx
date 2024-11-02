@@ -26,6 +26,10 @@ export function FormAndViewer() {
 
   const pdfTemplatesData = usePdfTemplatesData();
 
+  if (pdfTemplatesData.isPending) {
+    return <div>Loading...</div>;
+  }
+
   const initTemplate = () => {
     let template: Template = getTemplateByPreset(
       localStorage.getItem("templatePreset") || "",
@@ -129,10 +133,6 @@ export function FormAndViewer() {
     }
     buildUi(mode);
     setPrevUiRef(uiRef);
-  }
-
-  if (pdfTemplatesData.isPending) {
-    return <div>Loading...</div>;
   }
 
   return (
