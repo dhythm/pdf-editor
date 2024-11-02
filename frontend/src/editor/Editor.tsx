@@ -10,7 +10,8 @@ import {
   handleLoadTemplate,
   generatePDF,
   getTemplatePresets,
-} from "../utils";
+} from "@/utils";
+import { usePdfTemplates } from "@/hooks";
 
 const headerHeight = 80;
 
@@ -28,6 +29,9 @@ export function Editor() {
   const [prevDesignerRef, setPrevDesignerRef] = useState<UiDesigner | null>(
     null
   );
+  const pdfTemplates = usePdfTemplates();
+
+  console.log(pdfTemplates.data);
 
   const buildDesigner = () => {
     let template: Template = getTemplateByPreset(

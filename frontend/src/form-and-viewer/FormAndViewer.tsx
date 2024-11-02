@@ -8,7 +8,7 @@ import {
   generatePDF,
   getPlugins,
   isJsonString,
-} from "../utils";
+} from "@/utils";
 
 const headerHeight = 71;
 
