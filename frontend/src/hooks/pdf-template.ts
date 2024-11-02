@@ -3,10 +3,11 @@ import { useQuery } from "@/api/hooks";
 import { z } from "zod";
 
 const PdfTemplateModel = z.object({
-  name: z.string(),
-  template: z.any(),
-  createdAt: z.string(),
-  updatedAt: z.string(),
+  // name: z.string(),
+  // template: z.any(),
+  // createdAt: z.string(),
+  // updatedAt: z.string(),
+  data: z.array(z.array(z.string())),
 });
 
 export const usePdfTemplates = <T = z.infer<typeof PdfTemplateModel>>(
@@ -16,7 +17,6 @@ export const usePdfTemplates = <T = z.infer<typeof PdfTemplateModel>>(
     queryKey: ["pdf-templates"],
     queryFn: async () => {
       const response = await apiGet("/api/pdfs/templates");
-      console.log(response);
       return PdfTemplateModel.parse(response);
     },
     select,

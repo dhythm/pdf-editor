@@ -22,3 +22,7 @@ up-build: downv
 up-only-api: downv
 	docker-compose up -d api
 	@echo "containers are ready! ${API_ENDPOINT}"
+
+.PHONY: db
+db: downv
+	docker-compose up -d db

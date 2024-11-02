@@ -58,10 +58,18 @@ MIDDLEWARE = [
 
 # https://pypi.org/project/django-cors-headers/
 CORS_ALLOW_CREDENTIALS = False
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_HEADERS = [
-    *default_headers,
-]
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_METHODS = (
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+)
+# CORS_ALLOW_HEADERS = [
+#     *default_headers,
+# ]
 
 
 ROOT_URLCONF = "app.urls"
