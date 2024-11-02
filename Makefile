@@ -10,12 +10,14 @@ downv:
 up: downv
 	docker compose up -d
 	@echo "containers are ready! ${WEB_URL}"
+	sleep 2
 	@open ${WEB_URL}
 
 .PHONY: up-build
 up-build: downv
 	docker compose up -d --build
 	@echo "containers are ready! ${WEB_URL}"
+	sleep 2
 	@open ${WEB_URL}
 
 .PHONY: up-only-api
