@@ -93,3 +93,34 @@ poetry add gunicorn
 docker compose down -v && docker compose up -d
 curl http://127.0.0.1:8000/api/pdfs/templates/
 ```
+
+## Database
+
+Connect to database.
+
+```sh
+docker compose
+docker compose exec -it db psql -U postgres postgres
+```
+
+Create superuser for django Admin.
+
+```sh
+poetry run python manage.py createsuperuser
+
+Username (leave blank to use 'dhythm'): admin
+Email address: admin@example.com
+Password: ********
+Password (again): ********
+Bypass password validation and create user anyway? [y/N]: y
+```
+
+Dump database as a backup and restore database from the latest backup file.
+
+```sh
+docker compose exec db pg_dump -c -U postgres > database/pg_dump_$(date "+%Y%m%d%H%M%S").sql
+docker compose exec -T db psql -U postgres postgres < $(\ls -1rt database/*.sql | tail -n 1)
+
+docker compose exec db pg_dump -Fc -U postgres > database/pg_$(date "+%Y%m%d%H%M%S").dump
+docker compose exec -T db pg_restore -C -U postgres -d postgres < $(\ls -1rt database/*.dump | tail -n 1)
+```

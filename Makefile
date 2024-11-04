@@ -22,7 +22,8 @@ up-build: downv
 
 .PHONY: up-only-api
 up-only-api: downv
-	docker compose up -d api migtaiton
+	# docker compose up -d api migtaiton
+	docker compose up -d api
 	@echo "containers are ready! ${API_ENDPOINT}"
 
 .PHONY: migrate
