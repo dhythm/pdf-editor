@@ -124,3 +124,9 @@ docker compose exec -T db psql -U postgres postgres < $(\ls -1rt database/*.sql 
 docker compose exec db pg_dump -Fc -U postgres > database/pg_$(date "+%Y%m%d%H%M%S").dump
 docker compose exec -T db pg_restore -C -U postgres -d postgres < $(\ls -1rt database/*.dump | tail -n 1)
 ```
+
+Generate data from fixtures.
+
+```sh
+poetry run python manage.py loaddata fixture.json
+```
